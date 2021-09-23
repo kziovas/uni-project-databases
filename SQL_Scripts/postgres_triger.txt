@@ -1,0 +1,13 @@
+Create or Replace function stock_func() returns trigger as $$
+BEGIN
+update books set quantity=quantity-new.quantity;
+return NEW;
+END;
+$$
+language'plpgsql';
+
+CREATE TRIGGER upd_stock
+AFTER INSERT
+ON includes_books
+FOR EACH ROW
+EXECUTE PROCEDURE stock_func();
